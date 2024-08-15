@@ -1,6 +1,7 @@
 package mini_project.spk.service;
 
 import mini_project.spk.dto.AnalysisDTO;
+import mini_project.spk.dto.AnalysisResultDTO;
 import mini_project.spk.model.Analysis;
 import mini_project.spk.model.Customer;
 
@@ -10,8 +11,7 @@ public interface AnalysisService {
 
     List<Analysis> getAll();
     Analysis getById(Integer id);
-    Analysis create(AnalysisDTO request);
-    Analysis updateById(Integer id, AnalysisDTO updateReq);
     void deleteById(Integer id);
+    AnalysisResultDTO analyzeLoan(Integer loanId);
 
 }

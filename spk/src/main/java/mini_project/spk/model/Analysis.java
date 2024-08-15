@@ -22,7 +22,6 @@ public class Analysis {
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
-    private BigDecimal loanToIncomeRatio;
     private BigDecimal eligibilityScore;
 
     @Enumerated(EnumType.STRING)

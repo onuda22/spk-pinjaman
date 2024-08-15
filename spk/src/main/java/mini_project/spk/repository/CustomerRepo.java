@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, Integer> {
@@ -26,6 +27,16 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
      */
     @Query(value = "SELECT * FROM Customers WHERE id = :id", nativeQuery = true)
     Customer findCustomerById(@Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM customers WHERE id = :customerId", nativeQuery = true)
+    Optional<Customer> findCustomerByIdOpt(@Param("customerId") Integer customerId);
+
+    @Query(value = "SELECT * FROM customers ORDER BY income DESC LIMIT 1", nativeQuery = true)
+    Customer findCustomerByMaxIncome();
+
+    @Query(value = "SELECT * FROM customers ORDER BY age DESC LIMIT 1", nativeQuery = true)
+    Customer findCustomerByAge();
+
 
     /*
     * Create Customer Data

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnalysisRepo extends JpaRepository<Analysis, Integer> {
@@ -26,27 +27,29 @@ public interface AnalysisRepo extends JpaRepository<Analysis, Integer> {
     @Query(value = "SELECT * FROM Analysis WHERE id = :id", nativeQuery = true)
     Analysis findAnalysisById(@Param("id") Integer id);
 
+    @Query(value = "SELECT * FROM analysis WHERE loan_id = :loanId", nativeQuery = true)
+    Optional<Analysis> findAnalysisByLoanId(@Param("loanId") Integer loanId);
+
     /*
      * Create Analysis Data
      */
     @Transactional
-    @Query(value = "INSERT INTO Analysis(loan_id, loan_to_income_ratio, eligibility_score, risk_level)" +
-            "VALUES (:loan_id, :loan_to_income_ratio, :eligibility_score, :risk_level) RETURNING *", nativeQuery = true)
-    Analysis saveAnalysis(@Param("loan_id") Integer loan_id,
-                          @Param("loan_to_income_ratio") BigDecimal loan_to_income_ratio,
-                          @Param("eligibility_score") BigDecimal eligibility_score,
-                          @Param("risk_level") String risk_level
+    @Modifying
+    @Query(value = "INSERT INTO Analysis(loan_id, eligibility_score, risk_level)" +
+            "VALUES (:loan_id, :eligibility_score, :risk_level)", nativeQuery = true)
+    void saveAnalysis(@Param("loan_id") Integer loan_id,
+                      @Param("eligibility_score") BigDecimal eligibility_score,
+                      @Param("risk_level") String risk_level
     );
 
     /*
      * Update Analysis Data
      */
     @Transactional
-    @Query(value = "UPDATE Analysis SET loan_id = :loan_id, loan_to_income_ratio = :loan_to_income_ratio, eligibility_score = :eligibility_score, risk_level = :risk_level " +
+    @Query(value = "UPDATE Analysis SET loan_id = :loan_id eligibility_score = :eligibility_score, risk_level = :risk_level " +
             "WHERE id = :id RETURNING *", nativeQuery = true)
     Analysis updateAnalysis(@Param("id") Integer id,
                             @Param("loan_id") Integer loan_id,
-                            @Param("loan_to_income_ratio") BigDecimal loan_to_income_ratio,
                             @Param("eligibility_score") BigDecimal eligibility_score,
                             @Param("risk_level") String risk_level
     );

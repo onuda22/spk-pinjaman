@@ -25,5 +25,6 @@ public class Loan {
     private Integer loanTerm;
     private String collateralType;
     private BigDecimal collateralValue;
+    private BigDecimal loanToIncomeRatio;
 
 }
